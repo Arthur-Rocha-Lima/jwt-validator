@@ -10,12 +10,16 @@ public class NameValidator implements ClaimValidator {
     public void validate(Claims claims) {
         String name = claims.get("Name", String.class);
 
-        if (name == null || name.matches(".*\\d.*")) {
-            throw new RuntimeException("Name inválido");
+        if (name == null) {
+            throw new RuntimeException("Name is null");
+        }
+
+        if (name.matches(".*\\d.*")) {
+            throw new RuntimeException("Name has numbers");
         }
 
         if (name.length() > 256) {
-            throw new RuntimeException("Name muito grande");
+            throw new RuntimeException("Name is to big");
         }
     }
 }

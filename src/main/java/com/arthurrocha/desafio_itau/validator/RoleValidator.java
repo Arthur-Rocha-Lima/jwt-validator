@@ -13,9 +13,13 @@ public class RoleValidator implements ClaimValidator {
     public void validate(Claims claims) {
         String role = claims.get("Role", String.class);
 
-        if (role == null || Arrays.stream(Role.values())
-                .noneMatch(r -> r.name().equalsIgnoreCase(role))) {
-            throw new RuntimeException("Role inválido");
+        if (role == null) {
+            throw new RuntimeException("Role is null");
+        }
+
+        if (Arrays.stream(Role.values())
+                        .noneMatch(r -> r.getName().equals(role))) {
+            throw new RuntimeException("Role does not exist");
         }
     }
 }
