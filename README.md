@@ -1,12 +1,12 @@
 # Desafio Itaú - Validação de JWT
 
-Esta aplicação é uma API REST simples desenvolvida com Spring Boot que valida tokens JWT conforme as regras do desafio.
+Esta aplicação é uma API REST desenvolvida com Spring Boot que valida tokens JWT conforme as regras do desafio.
 
 ## Regras de Validação
 
 Um token JWT é considerado válido se:
-1. For um JWT válido (assinatura válida);
-2. Contiver exatamente 3 claims: `Name`, `Role` e `Seed`;
+1. For um JWT válido (estrutura correta);
+2. Conter exatamente 3 claims: `Name`, `Role` e `Seed`;
 3. A claim `Name` não pode conter caracteres numéricos;
 4. A claim `Role` deve conter exatamente um dos valores: `Admin`, `Member` ou `External`;
 5. A claim `Seed` deve ser um número primo;
@@ -22,49 +22,44 @@ Um token JWT é considerado válido se:
 ## Como Executar
 
 ### Pré-requisitos
-- Java 21 instalado
-- Maven instalado
+- Docker instalado
 
 ### Passos
 1. Clone o repositório:
    ```bash
-   git clone https://github.com/seu-usuario/desafio-itau.git
+   git clone https://github.com/Arthur-Rocha-Lima/jwt-validator
    cd desafio-itau
    ```
 
-2. Compile o projeto:
+2. Build o projeto:
    ```bash
-   mvn clean install
+   docker compose build
    ```
 
-3. Execute a aplicação:
+3. Execute o container:
    ```bash
-   mvn spring-boot:run
+   docker compose up -d
    ```
    A aplicação será iniciada na porta 8080 por padrão.
 
-4. Para validar um token JWT, faça uma requisição GET:
-   ```bash
-   curl -X GET "http://localhost:8080/validate?token=SEU_JWT_AQUI"
-   ```
-   A resposta será `true` se o token for válido, ou `false` caso contrário.
 
-## Exemplo de Uso
+## Coleções Insomnia
 
-### Token Válido (exemplo do desafio)
-```bash
-curl -X GET "http://localhost:8080/validate?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJST0xFIjoiQWRtaW4iLCJTZWVkIjoiNzg0MSIsIk5hbWUiOiJPbmhpbm8gQXJhdWpvIn0.XXXXX"
-```
-Saída esperada: `true`
+Dentro do arquivo `Insomnia_Collection.yaml` existem as coleções do insomnia para esse desafio, contendo as seguintes requests:
+- Request enviando um token válido, onde deve receber o retorno true;
+- Request enviando um token inválido, onde deve receber o retorno false;
+- Request do actuator para validar se a aplicação está executando.
 
-### Token Inválido (exemplo do desafio)
-```bash
-curl -X GET "http://localhost:8080/validate?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.UkVMRF9FTVBIRVIiLCJTZWVkIjoiNzIzNDEiLCJOYW1lIjoiTTQuYmlhIE9saXZpYWEifQ.XXXXX"
-```
-Saída esperada: `false`
+## Organização do código
 
-## Estrutura do Código
+Essa API foi desenvolvida utilizando os padrões Controller e Service, separando cada camada com sua devida responsabilidade.
 
-- `src/main/java/com/arthurrocha/desafio_itau/controller/JwtValidationController.java`: Controller REST que expõe o endpoint `/validate`.
-- `src/main/java/com/arthurrocha/desafio_itau/service/JwtValidationService.java`: Serviço que contém a lógica de validação do JWT.
-- `src/main/java/com/arthurrocha/desafio_itau/DesafioItauApplication.java`: Classe principal da aplicação Spring Boot.
+A controller é responsável por receber o request, encaminhar a mensagem para a service e retornar se o token é válido ou não.
+
+A service recebe o token e faz todas as validações necessárias no código, como esse token JWT enviado não é um token criado pelo nosso serviço, foi presumido que não deveria validar a assinatura do token, por isso a service remove essa assinatura e apenas coleta as Claims que serão validadas.
+
+Para a validação de cada claim foi criado uma classe específica com a anotação `Component` que implementa a interface `ClaimValidator`, dessa forma podemos separar cada validação em uma classe específica, facilitando a manutenção do código e deixando o Spring carregar essas classes automaticamente apenas mencionando a Interface.
+
+Outra decisão feita no código foi criar um Enum para armazenar todas as possíveis Roles que devem ser aceitas no código, dessa forma definimos as roles de forma indireta. Ou seja, caso seja criado uma nova role, apenas será necessário alterar o Enum, não necessitando alterar nenhuma condicional do código, por exemplo
+
+
