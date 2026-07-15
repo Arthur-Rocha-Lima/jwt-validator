@@ -1,5 +1,6 @@
 package com.arthurrocha.desafio_itau.validator;
 
+import com.arthurrocha.desafio_itau.exception.InvalidJwtTokenException;
 import io.jsonwebtoken.Claims;
 import org.springframework.stereotype.Component;
 
@@ -11,15 +12,15 @@ public class NameValidator implements ClaimValidator {
         String name = claims.get("Name", String.class);
 
         if (name == null) {
-            throw new RuntimeException("Name is null");
+            throw new InvalidJwtTokenException("Name is null");
         }
 
         if (name.matches(".*\\d.*")) {
-            throw new RuntimeException("Name has numbers");
+            throw new InvalidJwtTokenException("Name has numbers");
         }
 
         if (name.length() > 256) {
-            throw new RuntimeException("Name is to big");
+            throw new InvalidJwtTokenException("Name is too big");
         }
     }
 }

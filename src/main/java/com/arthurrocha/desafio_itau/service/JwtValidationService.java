@@ -1,5 +1,6 @@
 package com.arthurrocha.desafio_itau.service;
 
+import com.arthurrocha.desafio_itau.exception.InvalidJwtTokenException;
 import com.arthurrocha.desafio_itau.utils.JwtUtils;
 import com.arthurrocha.desafio_itau.validator.ClaimValidator;
 import io.jsonwebtoken.Claims;
@@ -35,15 +36,17 @@ public class JwtValidationService {
             validateClaims(claims);
 
             return true;
+        } catch (InvalidJwtTokenException e) {
+            throw e;
         } catch (Exception e) {
             logger.error("Error validating token", e);
-            return false;
+            throw new InvalidJwtTokenException("Estrutura do token inválida: " + e.getMessage());
         }
     }
 
     private void validateClaims(Claims claims) {
         if (claims.size() != 3) {
-            throw new RuntimeException("Quantidade de claims inválida");
+            throw new InvalidJwtTokenException("Quantidade de claims inválida. Esperado: 3, recebido: " + claims.size());
         }
 
         validators.forEach(v -> v.validate(claims));

@@ -1,13 +1,19 @@
 package com.arthurrocha.desafio_itau.controller;
 
+import com.arthurrocha.desafio_itau.exception.InvalidJwtTokenException;
+import com.arthurrocha.desafio_itau.service.JwtValidationService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
+import org.springframework.http.MediaType;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
@@ -17,24 +23,45 @@ class JwtValidationControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    private static final String INVALID_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJSb2xlIjoiTm9uZSIsIlNlZWQiOiIyIiwiTmFtZSI6Ik9uaGlubyBBcmF1am8ifQ.IC2rEE_E8w55h_iRV08NTMvpNQU6oDbfBL1BLbD1jw8";
-    private static final String VALID_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJSb2xlIjoiQWRtaW4iLCJTZWVkIjoiNzg0MSIsIk5hbWUiOiJPbmhpbm8gQXJhdWpvIn0.v-85wtz0CBTh_6Jje7jwE-OPEagZ7iZB79A1jCkyPdE";
+    @MockitoBean
+    private JwtValidationService jwtValidationService;
 
     @Test
-    @DisplayName("Deve retornar false para token inválido")
-    void shouldReturnFalseForInvalidToken() throws Exception {
-        mockMvc.perform(get("/jwt/validate")
-                        .param("token", INVALID_TOKEN))
-                .andExpect(status().isOk())
-                .andExpect(content().string("false"));
+    @DisplayName("Deve retornar 422 para token inválido")
+    void shouldReturn422ForInvalidToken() throws Exception {
+        // Given
+        String token = "invalid-token";
+        given(jwtValidationService.validateToken(token))
+                .willThrow(new InvalidJwtTokenException("Token malformed"));
+
+        // When & Then
+        mockMvc.perform(post("/jwt/validate")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"token\":\"" + token + "\"}"))
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(jsonPath("$.status").value(422))
+                .andExpect(jsonPath("$.message").value("Token inválido: Token malformed"))
+                .andExpect(jsonPath("$.error").value("Unprocessable Entity"));
+
+        // Then verify the service was called with the token
+        verify(jwtValidationService).validateToken(token);
     }
 
     @Test
-    @DisplayName("Deve retornar true para token válido")
-    void shouldReturnTrueForValidToken() throws Exception {
-        mockMvc.perform(get("/jwt/validate")
-                        .param("token", VALID_TOKEN))
+    @DisplayName("Deve retornar 200 com true para token válido")
+    void shouldReturn200ForValidToken() throws Exception {
+        // Given
+        String token = "valid-token";
+        given(jwtValidationService.validateToken(token)).willReturn(true);
+
+        // When & Then
+        mockMvc.perform(post("/jwt/validate")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"token\":\"" + token + "\"}"))
                 .andExpect(status().isOk())
                 .andExpect(content().string("true"));
+
+        // Then verify the service was called with the token
+        verify(jwtValidationService).validateToken(token);
     }
 }

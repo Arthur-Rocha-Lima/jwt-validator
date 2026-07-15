@@ -12,15 +12,20 @@ collection:
     meta:
       id: req_1b6b031500a84ff8a2d4a9331f7c7efa
       created: 1783880513418
-      modified: 1784079550353
+      modified: 1784126875974
       isPrivate: false
       description: ""
       sortKey: -1783880513418
-    method: GET
-    parameters:
-      - name: token
-        value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJSb2xlIjoiTm9uZSIsIlNlZWQiOiIyIiwiTmFtZSI6Ik9uaGlubyBBcmF1am8ifQ.IC2rEE_E8w55h_iRV08NTMvpNQU6oDbfBL1BLbD1jw8
-        disabled: false
+    method: POST
+    body:
+      mimeType: application/json
+      text: >-
+        {
+        	"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJSb2xlIjoiTm9uZSIsIlNlZWQiOiIyIiwiTmFtZSI6Ik9uaGlubyBBcmF1am8ifQ.IC2rEE_E8w55h_iRV08NTMvpNQU6oDbfBL1BLbD1jw8"
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
     settings:
       renderRequestBody: true
       encodeUrl: true
@@ -34,15 +39,20 @@ collection:
     meta:
       id: req_815a045dcc094dcfbad5274af058fe66
       created: 1783880541653
-      modified: 1784078917833
+      modified: 1784126903035
       isPrivate: false
       description: ""
       sortKey: -1783880513368
-    method: GET
-    parameters:
-      - name: token
-        value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJSb2xlIjoiQWRtaW4iLCJTZWVkIjoiNzg0MSIsIk5hbWUiOiJPbmhpbm8gQXJhdWpvIn0.v-85wtz0CBTh_6Jje7jwE-OPEagZ7iZB79A1jCkyPdE
-        disabled: false
+    method: POST
+    body:
+      mimeType: application/json
+      text: >-
+        {
+        	"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJSb2xlIjoiQWRtaW4iLCJTZWVkIjoiNzg0MSIsIk5hbWUiOiJPbmhpbm8gQXJhdWpvIn0.v-85wtz0CBTh_6Jje7jwE-OPEagZ7iZB79A1jCkyPdE"
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
     settings:
       renderRequestBody: true
       encodeUrl: true

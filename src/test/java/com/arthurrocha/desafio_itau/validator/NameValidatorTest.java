@@ -1,5 +1,6 @@
 package com.arthurrocha.desafio_itau.validator;
 
+import com.arthurrocha.desafio_itau.exception.InvalidJwtTokenException;
 import io.jsonwebtoken.Claims;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -74,7 +75,7 @@ class NameValidatorTest {
         @DisplayName("deve lançar exceção quando nome é nulo")
         void shouldThrowWhenNameIsNull() {
             when(claims.get("Name", String.class)).thenReturn(null);
-            RuntimeException exception = assertThrows(RuntimeException.class, () -> validator.validate(claims));
+            InvalidJwtTokenException exception = assertThrows(InvalidJwtTokenException.class, () -> validator.validate(claims));
             assertEquals("Name is null", exception.getMessage());
         }
 
@@ -82,7 +83,7 @@ class NameValidatorTest {
         @DisplayName("deve lançar exceção quando nome contém dígitos")
         void shouldThrowWhenNameContainsDigits() {
             when(claims.get("Name", String.class)).thenReturn("Joao123");
-            RuntimeException exception = assertThrows(RuntimeException.class, () -> validator.validate(claims));
+            InvalidJwtTokenException exception = assertThrows(InvalidJwtTokenException.class, () -> validator.validate(claims));
             assertEquals("Name has numbers", exception.getMessage());
         }
 
@@ -91,8 +92,8 @@ class NameValidatorTest {
         void shouldThrowWhenNameTooLong() {
             String tooLong = "a".repeat(257);
             when(claims.get("Name", String.class)).thenReturn(tooLong);
-            RuntimeException exception = assertThrows(RuntimeException.class, () -> validator.validate(claims));
-            assertEquals("Name is to big", exception.getMessage());
+            InvalidJwtTokenException exception = assertThrows(InvalidJwtTokenException.class, () -> validator.validate(claims));
+            assertEquals("Name is too big", exception.getMessage());
         }
     }
 }

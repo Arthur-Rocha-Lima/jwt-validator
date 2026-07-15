@@ -1,5 +1,6 @@
 package com.arthurrocha.desafio_itau.service;
 
+import com.arthurrocha.desafio_itau.exception.InvalidJwtTokenException;
 import com.arthurrocha.desafio_itau.validator.ClaimValidator;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.impl.DefaultClaims;
@@ -16,6 +17,7 @@ import java.util.Base64;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+
 import static org.mockito.Mockito.*;
 
 @DisplayNameGeneration(ReplaceUnderscores.class)
@@ -55,36 +57,37 @@ class JwtValidationServiceTest {
     class InvalidToken {
 
         @Test
-        @DisplayName("deve retornar false quando token é mal formatado")
-        void shouldReturnFalseWhenTokenMalformed() {
+        @DisplayName("deve lançar exceção quando token é mal formatado")
+        void shouldThrowExceptionWhenTokenMalformed() {
             String invalidToken = "token.invalido";
 
-            boolean result = service.validateToken(invalidToken);
+            assertThrows(InvalidJwtTokenException.class, () -> {
+                service.validateToken(invalidToken);
+            });
 
-            assertFalse(result);
             verify(validator, never()).validate(any());
         }
 
         @Test
-        @DisplayName("deve retornar false quando quantidade de claims é inválida")
-        void shouldReturnFalseWhenClaimsSizeInvalid() {
+        @DisplayName("deve lançar exceção quando quantidade de claims é inválida")
+        void shouldThrowExceptionWhenClaimsSizeInvalid() {
             String token = generateTokenWith1Claim();
 
-            boolean result = service.validateToken(token);
-
-            assertFalse(result);
+            assertThrows(InvalidJwtTokenException.class, () -> {
+                service.validateToken(token);
+            });
         }
 
         @Test
-        @DisplayName("deve retornar false quando validator lança exceção")
-        void shouldReturnFalseWhenValidatorThrowsException() {
+        @DisplayName("deve lançar exceção quando validator lança exceção")
+        void shouldThrowExceptionWhenValidatorThrowsException() {
             String token = generateTokenWith3Claims();
 
             doThrow(new RuntimeException("erro")).when(validator).validate(any());
 
-            boolean result = service.validateToken(token);
-
-            assertFalse(result);
+            assertThrows(InvalidJwtTokenException.class, () -> {
+                service.validateToken(token);
+            });
         }
     }
 

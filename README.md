@@ -42,12 +42,27 @@ Um token JWT é considerado válido se:
    ```
    A aplicação será iniciada na porta 8080 por padrão.
 
+## Como usar a API
+
+A validação do JWT é feita através de um endpoint POST:
+
+**Endpoint:** `POST /jwt/validate`
+**Content-Type:** `application/json`
+**Request Body:**
+```json
+{
+  "token": "seu_token_jwt_aqui"
+}
+```
+**Response:**
+- `true` se o token for válido conforme as regras do desafio
+- `false` caso contrário
 
 ## Coleções Insomnia
 
 Dentro do arquivo `Insomnia_Collection.yaml` existem as coleções do insomnia para esse desafio, contendo as seguintes requests:
-- Request enviando um token válido, onde deve receber o retorno true;
-- Request enviando um token inválido, onde deve receber o retorno false;
+- Request enviando um token válido (via POST com corpo JSON), onde deve receber o retorno true;
+- Request enviando um token inválido (via POST com corpo JSON), onde deve receber o retorno false;
 - Request do actuator para validar se a aplicação está executando.
 
 ## Organização do código
@@ -58,7 +73,7 @@ A controller é responsável por receber o request, encaminhar a mensagem para a
 
 A service recebe o token e faz todas as validações necessárias no código, como esse token JWT enviado não é um token criado pelo nosso serviço, foi presumido que não deveria validar a assinatura do token, por isso a service remove essa assinatura e apenas coleta as Claims que serão validadas.
 
-Para a validação de cada claim foi criado uma classe específica com a anotação `Component` que implementa a interface `ClaimValidator`, dessa forma podemos separar cada validação em uma classe específica, facilitando a manutenção do código e deixando o Spring carregar essas classes automaticamente apenas mencionando a Interface.
+Para a validação de cada claim foi criada uma classe específica com a anotação `Component` que implementa a interface `ClaimValidator`, dessa forma podemos separar cada validação em uma classe específica, facilitando a manutenção do código e deixando o Spring carregar essas classes automaticamente apenas mencionando a Interface.
 
 Outra decisão feita no código foi criar um Enum para armazenar todas as possíveis Roles que devem ser aceitas no código, dessa forma definimos as roles de forma indireta. Ou seja, caso seja criado uma nova role, apenas será necessário alterar o Enum, não necessitando alterar nenhuma condicional do código, por exemplo
 
