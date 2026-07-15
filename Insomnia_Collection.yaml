@@ -1,0 +1,84 @@
+type: collection.insomnia.rest/5.0
+schema_version: "5.1"
+name: Desafio Itaú
+meta:
+  id: wrk_0251049d8f6a46c296c3ac8506e15302
+  created: 1724461324685
+  modified: 1783795880614
+  description: ""
+collection:
+  - url: http://localhost:8080/jwt/validate
+    name: Validate JSON - False
+    meta:
+      id: req_1b6b031500a84ff8a2d4a9331f7c7efa
+      created: 1783880513418
+      modified: 1784079550353
+      isPrivate: false
+      description: ""
+      sortKey: -1783880513418
+    method: GET
+    parameters:
+      - name: token
+        value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJSb2xlIjoiTm9uZSIsIlNlZWQiOiIyIiwiTmFtZSI6Ik9uaGlubyBBcmF1am8ifQ.IC2rEE_E8w55h_iRV08NTMvpNQU6oDbfBL1BLbD1jw8
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/jwt/validate
+    name: Validate JSON - True
+    meta:
+      id: req_815a045dcc094dcfbad5274af058fe66
+      created: 1783880541653
+      modified: 1784078917833
+      isPrivate: false
+      description: ""
+      sortKey: -1783880513368
+    method: GET
+    parameters:
+      - name: token
+        value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJSb2xlIjoiQWRtaW4iLCJTZWVkIjoiNzg0MSIsIk5hbWUiOiJPbmhpbm8gQXJhdWpvIn0.v-85wtz0CBTh_6Jje7jwE-OPEagZ7iZB79A1jCkyPdE
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/actuator/health
+    name: Actuator
+    meta:
+      id: req_96302d9b4d30434182a58e05850327e8
+      created: 1784084810062
+      modified: 1784085182372
+      isPrivate: false
+      description: ""
+      sortKey: -1784084810062
+    method: GET
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_54058abc686db46c6e1687dce1df75d3d088330e
+    created: 1783795798935
+    modified: 1783795798935
+environments:
+  name: Base Environment
+  meta:
+    id: env_54058abc686db46c6e1687dce1df75d3d088330e
+    created: 1724461324689
+    modified: 1783795798809
+    isPrivate: false
