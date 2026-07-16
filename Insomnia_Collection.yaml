@@ -12,7 +12,7 @@ collection:
     meta:
       id: req_1b6b031500a84ff8a2d4a9331f7c7efa
       created: 1783880513418
-      modified: 1784126875974
+      modified: 1784164956767
       isPrivate: false
       description: ""
       sortKey: -1783880513418
@@ -21,7 +21,7 @@ collection:
       mimeType: application/json
       text: >-
         {
-        	"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJSb2xlIjoiTm9uZSIsIlNlZWQiOiIyIiwiTmFtZSI6Ik9uaGlubyBBcmF1am8ifQ.IC2rEE_E8w55h_iRV08NTMvpNQU6oDbfBL1BLbD1jw8"
+        	"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJSb2xlIjoiQWRtaW4iLCJTZWVkIjoiMiIsIk5hbWUiOiJPbmhpbm8gQXJhdWpvIE9uaGlubyBBcmF1am8gT25oaW5vIEFyYXVqbyBPbmhpbm8gQXJhdWpvIE9uaGlubyBBcmF1am8gT25oaW5vIEFyYXVqbyBPbmhpbm8gQXJhdWpvIE9uaGlubyBBcmF1am8gT25oaW5vIEFyYXVqbyBPbmhpbm8gQXJhdWpvIE9uaGlubyBBcmF1am8gT25oaW5vIEFyYXVqbyBPbmhpbm8gQXJhdWpvIE9uaGlubyBBcmF1am8gT25oaW5vIEFyYXVqbyBPbmhpbm8gQXJhdWpvIE9uaGlubyBBcmF1am8gT25oaW5vIEFyYXVqbyBPbmhpbm8gQXJhdWpvIE9uaGlubyBBcmF1am8gT25oaW5vIEFyYXVqbyBPbmhpbm8gQXJhdWpvIE9uaGlubyBBcmF1am8gT25oaW5vIEFyYXVqbyBPbmhpbm8gQXJhdWpvIE9uaGlubyBBcmF1am8gT25oaW5vIEFyYXVqbyAifQ.AS_vAQ1oZplwwBXyQmOdzAudxYhUuNLderZIshEI5fw"
         }
     headers:
       - name: Content-Type
@@ -39,7 +39,7 @@ collection:
     meta:
       id: req_815a045dcc094dcfbad5274af058fe66
       created: 1783880541653
-      modified: 1784126903035
+      modified: 1784163520038
       isPrivate: false
       description: ""
       sortKey: -1783880513368
@@ -48,7 +48,7 @@ collection:
       mimeType: application/json
       text: >-
         {
-        	"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJSb2xlIjoiQWRtaW4iLCJTZWVkIjoiNzg0MSIsIk5hbWUiOiJPbmhpbm8gQXJhdWpvIn0.v-85wtz0CBTh_6Jje7jwE-OPEagZ7iZB79A1jCkyPdE"
+        	"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJSb2xlIjoiQWRtaW4iLCJTZWVkIjoiMyIsIk5hbWUiOiJPbmhpbm8gQXJhdWpvIn0.faama9D1L_iAzvu9aNxKfJLeOdRQ97Z7mlMSL4hRZYU"
         }
     headers:
       - name: Content-Type
@@ -66,11 +66,38 @@ collection:
     meta:
       id: req_96302d9b4d30434182a58e05850327e8
       created: 1784084810062
-      modified: 1784085182372
+      modified: 1784126925353
       isPrivate: false
       description: ""
       sortKey: -1784084810062
     method: GET
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/jwt/validate
+    name: Validate JSON - Token blank
+    meta:
+      id: req_d5bf6774ce26475c952892049233b902
+      created: 1784164967630
+      modified: 1784164972990
+      isPrivate: false
+      description: ""
+      sortKey: -1783880513318
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"token": ""
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
     settings:
       renderRequestBody: true
       encodeUrl: true

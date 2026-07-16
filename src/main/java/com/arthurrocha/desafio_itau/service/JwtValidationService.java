@@ -37,12 +37,6 @@ public class JwtValidationService {
 
             validateClaims(claims);
 
-            logger.info("Token válido [token={}, claims=Name:{}, Role:{}, Seed:{}]",
-                    token,
-                    claims.get("Name", String.class),
-                    claims.get("Role", String.class),
-                    claims.get("Seed", String.class));
-
             return true;
         } catch (InvalidJwtTokenException e) {
             logger.warn("Token inválido [token={}, motivo={}]", token, e.getReason());

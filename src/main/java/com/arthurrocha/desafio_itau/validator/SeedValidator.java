@@ -4,6 +4,8 @@ import com.arthurrocha.desafio_itau.exception.InvalidJwtTokenException;
 import io.jsonwebtoken.Claims;
 import org.springframework.stereotype.Component;
 
+import java.math.BigInteger;
+
 @Component
 public class SeedValidator implements ClaimValidator {
 
@@ -16,20 +18,15 @@ public class SeedValidator implements ClaimValidator {
         }
 
         try {
-            int num = Integer.parseInt(seed);
-            if (!isPrimeNumber(num)) {
+            BigInteger num = new BigInteger(seed);
+            if (num.signum() <= 0) {
+                throw new InvalidJwtTokenException("Seed is not a prime number");
+            }
+            if (!num.isProbablePrime(10)) {
                 throw new InvalidJwtTokenException("Seed is not a prime number");
             }
         } catch (NumberFormatException e) {
             throw new InvalidJwtTokenException("Seed is not a number");
         }
-    }
-
-    private boolean isPrimeNumber(int number) {
-        if (number <= 1) return false;
-        for (int i = 2; i <= Math.sqrt(number); i++) {
-            if (number % i == 0) return false;
-        }
-        return true;
     }
 }
