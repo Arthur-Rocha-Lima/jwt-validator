@@ -1,6 +1,7 @@
 package com.arthurrocha.desafio_itau.controller;
 
 import com.arthurrocha.desafio_itau.service.JwtValidationService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,7 +27,7 @@ public class JwtValidationController {
      * @return true if the token is valid according to the challenge rules, false otherwise
      */
     @PostMapping("/validate")
-    public ResponseEntity<Boolean> validate(@RequestBody JwtTokenRequest jwtTokenRequest) {
+    public ResponseEntity<Boolean> validate(@Valid @RequestBody JwtTokenRequest jwtTokenRequest) throws Exception {
         boolean isValid = jwtValidationService.validateToken(jwtTokenRequest.token());
         return ResponseEntity.ok(isValid);
     }

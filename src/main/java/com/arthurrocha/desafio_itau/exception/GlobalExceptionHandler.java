@@ -1,7 +1,10 @@
 package com.arthurrocha.desafio_itau.exception;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -10,6 +13,27 @@ import java.util.Map;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    private static final Logger logger = LogManager.getLogger(GlobalExceptionHandler.class);
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<Map<String, Object>> handleValidationException(MethodArgumentNotValidException ex) {
+        String message = ex.getBindingResult().getFieldErrors().stream()
+                .map(error -> error.getField() + ": " + error.getDefaultMessage())
+                .reduce((a, b) -> a + "; " + b)
+                .orElse("Validation failed");
+
+        logger.warn("Requisição inválida: {}", message);
+
+        return ResponseEntity
+                .badRequest()
+                .body(Map.of(
+                        "timestamp", LocalDateTime.now().toString(),
+                        "status", 400,
+                        "error", "Bad Request",
+                        "message", message
+                ));
+    }
 
     @ExceptionHandler(InvalidJwtTokenException.class)
     public ResponseEntity<Map<String, Object>> handleInvalidJwtToken(InvalidJwtTokenException ex) {
@@ -25,6 +49,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, Object>> handleGeneralException(Exception ex) {
+        logger.error("Erro interno inesperado", ex);
+
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(Map.of(

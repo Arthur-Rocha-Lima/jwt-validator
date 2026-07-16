@@ -24,6 +24,8 @@ public class JwtValidationService {
     }
 
     public boolean validateToken(String token) {
+        logger.debug("Iniciando validação do token [hash={}]", token);
+
         try {
             String unsignedToken = JwtUtils.getUnsignedToken(token);
 
@@ -35,11 +37,18 @@ public class JwtValidationService {
 
             validateClaims(claims);
 
+            logger.info("Token válido [token={}, claims=Name:{}, Role:{}, Seed:{}]",
+                    token,
+                    claims.get("Name", String.class),
+                    claims.get("Role", String.class),
+                    claims.get("Seed", String.class));
+
             return true;
         } catch (InvalidJwtTokenException e) {
+            logger.warn("Token inválido [token={}, motivo={}]", token, e.getReason());
             throw e;
         } catch (Exception e) {
-            logger.error("Error validating token", e);
+            logger.error("Erro inesperado ao validar token [token={}]", token, e);
             throw new InvalidJwtTokenException("Estrutura do token inválida: " + e.getMessage());
         }
     }
